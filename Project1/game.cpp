@@ -64,17 +64,29 @@ void Game::handleEvents() {
 
 void Game::addObj(CircOb::Obj ob){
 	objects.push_back(ob);
+	collisionstatus.push_back(false);
 }
 
 void Game::update(float frametime) {
-	// need to find a better way to find which two objects will need to under go the collision function.
-	count++;
-	CircOb::circCollision(objects[0], objects[1]);
-	CircOb::circCollision(objects[1], objects[0]);
-	for (int i = 0; i < objects.size(); i++) {
-		CircOb::borderCollision(objects[i], 0, max_y, 0, max_x);
-		CircOb::findpos(objects[i],frametime);
+	if (CircOb::checkforcollis(objects[0], objects[1], frametime)) {
+		std::cout << "bloop1" << std::endl;
+		CircOb::circCollision(objects[0], objects[1], frametime);
 	}
+	if (CircOb::checkforcollis(objects[1], objects[2], frametime)) {
+		std::cout << "bloop2" << std::endl;
+		CircOb::circCollision(objects[1], objects[2], frametime);
+	}
+	if (CircOb::checkforcollis(objects[0], objects[2], frametime)) {
+		std::cout << "bloop3" << std::endl;
+		CircOb::circCollision(objects[0], objects[2], frametime);
+	}
+	CircOb::borderCollision(objects[0], 0, max_y, 0, max_x);
+	CircOb::borderCollision(objects[1], 0, max_y, 0, max_x);
+	CircOb::borderCollision(objects[2], 0, max_y, 0, max_x);
+	CircOb::findpos(objects[0], frametime);
+	CircOb::findpos(objects[1], frametime);
+	CircOb::findpos(objects[2], frametime);
+
 }
 
 void Game::DrawCircle(SDL_Renderer* renderer, CircOb::Obj circ){

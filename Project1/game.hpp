@@ -22,6 +22,7 @@ private:
 	int max_x;
 	int max_y;
 	std::vector<CircOb::Obj> objects;
+	std::vector<bool> collisionstatus;
 	int count = 0;
 	bool isrunning;
 	SDL_Window* window;
