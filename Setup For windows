@@ -1,0 +1,13 @@
+Go to https://github.com/libsdl-org/SDL/releases/tag/release-2.26.1
+
+download the one that says sdl2-devel-vc.zip
+
+extract the contents of the zip to the root of your c drive
+
+rename the folder to sld2
+
+download microsoft  visual studio  at https://visualstudio.microsoft.com/downloads/ if you don't have it already setup
+set it up, not to important, and when it asks you to open a new file select the clone repository and then clone this repository using the link
+
+https://github.com/nixz-leon/sdl_lin_proj.git
+
