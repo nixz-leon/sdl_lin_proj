@@ -7,6 +7,15 @@ void CircOb::findpos(Obj& ob, float time_step) {
 void CircOb::setName(Obj& ob, std::string new_name) {
 	ob.name = new_name;
 }
+void CircOb::setVals(Obj& ob, std::string new_name, float x, float y, float vx, float vy, int r, int g, int b)
+{
+	ob.name = new_name;
+	setPos(ob, x, y);
+	setVel(ob, vx, vy);
+	ob.color[0] = r;
+	ob.color[1] = g;
+	ob.color[2] = b;
+}
 void CircOb::setPos(Obj& ob, float x, float y) {
 	ob.position[x_comp] = x;
 	ob.position[y_comp] = y;
@@ -129,16 +138,19 @@ void CircOb::circCollision(Obj& ob_a, Obj& ob_b, float adjtime) {
 	if (flaga && flagb) {
 		proj(ob_a.velocity, acentered, projected1);
 		proj(ob_b.velocity, bcentered, projected2);
-		std::cout << "proj" << projected2[0] << ',' << projected1[1] << std::endl;
+		std::cout << "proj" << projected1[0] << ',' << projected1[1] << std::endl;
 		std::cout << "proj" << projected2[0] << ',' << projected2[1] << std::endl;
 		scalarmult(2, projected1, changea);
 		scalarmult(2, projected2, changeb);
-		sub(ob_a.velocity, changea);
-		sub(ob_b.velocity, changeb);
+		sub(ob_a.velocity, projected1);
+		sub(ob_b.velocity, projected2);
+		add(ob_a.velocity, projected2);
+		add(ob_b.velocity, projected1);
 	}
 	else if (flaga && !flagb) {
 		std::cout << "bloop4" << std::endl;
 		proj(ob_a.velocity, acentered, projected1);
+		std::cout << "proj" << projected2[0] << ',' << projected1[1] << std::endl;
 		sub(ob_a.velocity, projected1);
 		add(ob_b.velocity, projected1);
 	}
@@ -154,7 +166,7 @@ void CircOb::circCollision(Obj& ob_a, Obj& ob_b, float adjtime) {
 		findpos(ob_b, adjtime / 50);
 	}
 	std::cout << "momentum" << std::endl;
-	momentumstuff(ob_a, ob_b);
+	
 	std::cout << "end" << std::endl;
 	
 }
