@@ -68,6 +68,18 @@ void Game::addObj(CircOb::Obj ob){
 }
 
 void Game::update(float frametime) {
+	//I want to impliment a location hashing algo, which basically take the inital list of objects, run a quick hashing on it to split the objects into n number of lists of potentially collided objects
+	//from this I want to be able to describe this as a graph which each node, has a connection to each other, basically a distance between clusters.
+	//operations i want on this is a merge nodes, a split nodes, and then collision detection within nodes.
+	//This has benefits based on the size of the scene and then also by the radius of each node, ie the distance all the other objects have from the center node
+	//maybe i could even maybe add tags for each node to say if i know that all the objects in one node are all circs, to exclusively do circ collisions, rather than check between types
+	//
+	//
+	//I also want to add sprites and  figure out how to add rotations as well as optimize for 2d collisions more, with that i need to figure out how to get the budge to set the circles to just above the point of 
+	//collision
+	//I can abstract the code of the collisions and seperate the projection and altering part to be seperate so i can feed that same code into a circ and rect collision
+	//need to work out the math for a circ to rect collison as well
+
 	int max = objects.size();
 	for (int i = 0; i < max - 1; i++) {
 		for (int j = i + 1; j < max; j++) {

@@ -1,8 +1,10 @@
 #include "CircObj.hpp"
 
 void CircOb::findpos(Obj& ob, float time_step) {
-        ob.position[x_comp] = ob.position[x_comp] + (ob.velocity[x_comp] * time_step) + ((0.5f) * (ob.acceleration[x_comp] * time_step * time_step));
-		ob.position[y_comp] = ob.position[y_comp] + (ob.velocity[y_comp] * time_step) + ((0.5f) * (ob.acceleration[y_comp] * time_step * time_step));
+	ob.velocity[x_comp] = ob.velocity[x_comp] + (ob.acceleration[x_comp] * time_step);
+	ob.velocity[y_comp] = ob.velocity[y_comp] + (ob.acceleration[y_comp] * time_step);
+	ob.position[x_comp] = ob.position[x_comp] + (ob.velocity[x_comp] * time_step) + ((0.5f) * (ob.acceleration[x_comp] * (time_step * time_step)));
+	ob.position[y_comp] = ob.position[y_comp] + (ob.velocity[y_comp] * time_step) + ((0.5f) * (ob.acceleration[y_comp] * (time_step * time_step)));
 }
 void CircOb::setName(Obj& ob, std::string new_name) {
 	ob.name = new_name;
@@ -19,6 +21,11 @@ void CircOb::setVals(Obj& ob, std::string new_name, float x, float y, float vx, 
 void CircOb::setPos(Obj& ob, float x, float y) {
 	ob.position[x_comp] = x;
 	ob.position[y_comp] = y;
+}
+void CircOb::budge(Obj& ob, float time_step)
+{
+	ob.position[x_comp] = ob.position[x_comp] + (ob.velocity[x_comp] * time_step);
+	ob.position[y_comp] = ob.position[y_comp] + (ob.velocity[y_comp] * time_step);
 }
 void CircOb::setVel(Obj& ob, float xv, float yv) {
 	ob.velocity[x_comp] = xv;
@@ -150,23 +157,19 @@ void CircOb::circCollision(Obj& ob_a, Obj& ob_b, float adjtime) {
 	else if (flaga && !flagb) {
 		std::cout << "bloop4" << std::endl;
 		proj(ob_a.velocity, acentered, projected1);
-		std::cout << "proj" << projected2[0] << ',' << projected1[1] << std::endl;
 		sub(ob_a.velocity, projected1);
 		add(ob_b.velocity, projected1);
 	}
 	else {
 		std::cout << "bloop5" << std::endl;
 		proj(ob_b.velocity, bcentered, projected2);
-		std::cout << "proj" << projected2[0] << ',' << projected2[1] << std::endl;
 		add(ob_a.velocity, projected2);
 		sub(ob_b.velocity, projected2);
 	}
 	while (checkforcollis(ob_a, ob_b, adjtime)) {
-		findpos(ob_a, adjtime / 50);
-		findpos(ob_b, adjtime / 50);
+		budge(ob_a, adjtime / 50);
+		budge(ob_b, adjtime / 50);
 	}
-	std::cout << "momentum" << std::endl;
-	
 	std::cout << "end" << std::endl;
 	
 }

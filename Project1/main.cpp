@@ -22,16 +22,16 @@ int main(int argc, char* argv[]) {
 	CircOb::Obj circ10;
 	CircOb::Obj circ11;
 	CircOb::setVals(circ1, "green", 25, 25, 60, -600, 0, 255, 0);
-	CircOb::setVals(circ2, "red", 75, 75, 200, 200, 255, 0, 0);
-	CircOb::setVals(circ3, "blue", 125, 125, 600, -600, 0, 0, 255);
-	CircOb::setVals(circ4, "black", 175, 175, -600, 600, 0, 0, 0);
-	CircOb::setVals(circ5, "yellow", 225, 225, -600, 600, 255, 255, 0);
-	CircOb::setVals(circ6, "cyan", 275, 275, -600, 600, 0, 255, 255);
-	CircOb::setVals(circ7, "purple", 325, 325, -600, 600, 255, 0, 255);
-	CircOb::setVals(circ8, "bloop1", 375, 375, -600, 600, 255, 150, 255);
-	CircOb::setVals(circ9, "bloop2", 425, 425, -600, 600, 150, 255, 255);
-	CircOb::setVals(circ10, "bloop3", 475, 475, -600, 600, 255, 255, 150);
-	CircOb::setVals(circ11, "bloop4", 25, 75, -600, 600, 255, 120, 160);
+	CircOb::setVals(circ2, "red", 75, 75, 60, -600, 255, 0, 0);
+	CircOb::setVals(circ3, "blue", 125, 125, 60, -600, 0, 0, 255);
+	CircOb::setVals(circ4, "black", 175, 175, 60, -600, 0, 0, 0);
+	CircOb::setVals(circ5, "yellow", 225, 225, 60, -600, 255, 255, 0);
+	CircOb::setVals(circ6, "cyan", 275, 275, 60, -600, 0, 255, 255);
+	CircOb::setVals(circ7, "purple", 325, 325, 60, -600, 255, 0, 255);
+	CircOb::setVals(circ8, "bloop1", 375, 375, 60, -600, 255, 150, 255);
+	CircOb::setVals(circ9, "bloop2", 425, 425, 60, -600, 150, 255, 255);
+	CircOb::setVals(circ10, "bloop3", 475, 475, 60, -600, 255, 255, 150);
+	CircOb::setVals(circ11, "bloop4", 25, 75, 60, -600, 255, 120, 160);
 
 
 

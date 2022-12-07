@@ -10,7 +10,7 @@ namespace CircOb {
 	struct Obj {
 		std::string name;
 		int color[4] = {0,0,0,2};
-		int radius = 25;
+		int radius = 20;
 		float position[2];
 		float velocity[2] = {0,0};
 		float acceleration[2] = {0,0};
@@ -22,6 +22,7 @@ namespace CircOb {
 	//void add_force(Obj& ob, float force[2]);
 	void setVals(Obj& ob, std::string new_name, float x, float y, float vx, float vy, int r, int g, int b);
 	void setPos(Obj& ob, float x, float y);
+	void budge(Obj& ob, float time_step);
 	void setVel(Obj& ob, float xv, float yv);
 	void setName(Obj& ob, std::string new_name);
 	void setColor(Obj& ob, int r, int g, int b, int a);
