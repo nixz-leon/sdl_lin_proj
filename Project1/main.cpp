@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include <cstdlib>
 
 Game* game = nullptr;
 //All the math is contained in CircObj.cpp, to find and adjust radius go to circObj.hpp
@@ -34,17 +35,17 @@ int main(int argc, char* argv[]) {
 	while (numberofobjects > 0) {
 		CircOb::Obj temp;
 		std::cout << positionx << ',' << positiony << std::endl;
-		CircOb::setVals(temp, "ob", positionx, positiony, initalv[0], initalv[1], 255, 0, 0);
+		CircOb::setVals(temp, "ob", positionx, positiony, initalv[0], initalv[1], rand() % 255, rand() % 255, rand() % 255);
 		game->addObj(temp);
 		if ((positionx + spaceingx + 20) >= windowsize[x_comp]) {
 			positionx = spaceingx;
 			positiony += spaceingy;
-			initalv[0] += 5;
 		}
 		else {
 			positionx += spaceingx;
-			initalv[0] -= 5;
 		}
+		initalv[0] += rand() % 10;
+		initalv[1] += rand() % 10;
 		numberofobjects--;
 	}
 	while (game->running()) {
