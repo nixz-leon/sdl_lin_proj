@@ -1,7 +1,7 @@
 #include "Game.hpp"
 
 Game* game = nullptr;
-
+//All the math is contained in CircObj.cpp, to find and adjust radius go to circObj.hpp
 int main(int argc, char* argv[]) {
 	const int FPS = 200;
 	const int frameDelay = 1000 / FPS;
@@ -9,47 +9,44 @@ int main(int argc, char* argv[]) {
 
 	Uint32 frameStart;
 	int frameTime;
+	std::vector<CircOb::Obj>;
+	int windowsize[2] = {800, 800};
+	int numberofobjects;
+	int initalv[2];
+	std::cout << "how many objects: ";
+	std::cin >> numberofobjects;
+	std::cout << std::endl;
+	std::cout << "X component of velocity: ";
+	std::cin >> initalv[0];
+	std::cout << std::endl;
+	std::cout << "Y component of velocity: ";
+	std::cin >> initalv[1];
 
-	CircOb::Obj circ1;
-	CircOb::Obj circ2;
-	CircOb::Obj circ3;
-	CircOb::Obj circ4;
-	CircOb::Obj circ5;
-	CircOb::Obj circ6;
-	CircOb::Obj circ7;
-	CircOb::Obj circ8;
-	CircOb::Obj circ9;
-	CircOb::Obj circ10;
-	CircOb::Obj circ11;
-	CircOb::setVals(circ1, "green", 25, 25, 60, -600, 0, 255, 0);
-	CircOb::setVals(circ2, "red", 75, 75, 60, -600, 255, 0, 0);
-	CircOb::setVals(circ3, "blue", 125, 125, 60, -600, 0, 0, 255);
-	CircOb::setVals(circ4, "black", 175, 175, 60, -600, 0, 0, 0);
-	CircOb::setVals(circ5, "yellow", 225, 225, 60, -600, 255, 255, 0);
-	CircOb::setVals(circ6, "cyan", 275, 275, 60, -600, 0, 255, 255);
-	CircOb::setVals(circ7, "purple", 325, 325, 60, -600, 255, 0, 255);
-	CircOb::setVals(circ8, "bloop1", 375, 375, 60, -600, 255, 150, 255);
-	CircOb::setVals(circ9, "bloop2", 425, 425, 60, -600, 150, 255, 255);
-	CircOb::setVals(circ10, "bloop3", 475, 475, 60, -600, 255, 255, 150);
-	CircOb::setVals(circ11, "bloop4", 25, 75, 60, -600, 255, 120, 160);
-
-
-
+	int iteamperrow = sqrt(numberofobjects) + 1;
+	float spaceingx = windowsize[x_comp] / iteamperrow;
+	float spaceingy = windowsize[y_comp] / iteamperrow;
+	int positionx = spaceingx;
+	int positiony = spaceingy;
 
 
 	game = new Game();
-	game->init("bloop", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 500, 500, false);
-	game->addObj(circ1);
-	game->addObj(circ2);
-	game->addObj(circ3);
-	game->addObj(circ4);
-	game->addObj(circ5);
-	game->addObj(circ6);
-	game->addObj(circ7);
-	game->addObj(circ8);
-	game->addObj(circ9);
-	game->addObj(circ10);
-	game->addObj(circ11);
+	game->init("bloop", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowsize[0], windowsize[1], false);
+	while (numberofobjects > 0) {
+		CircOb::Obj temp;
+		std::cout << positionx << ',' << positiony << std::endl;
+		CircOb::setVals(temp, "ob", positionx, positiony, initalv[0], initalv[1], 255, 0, 0);
+		game->addObj(temp);
+		if ((positionx + spaceingx + 20) >= windowsize[x_comp]) {
+			positionx = spaceingx;
+			positiony += spaceingy;
+			initalv[0] += 5;
+		}
+		else {
+			positionx += spaceingx;
+			initalv[0] -= 5;
+		}
+		numberofobjects--;
+	}
 	while (game->running()) {
 
 		frameStart = SDL_GetTicks();

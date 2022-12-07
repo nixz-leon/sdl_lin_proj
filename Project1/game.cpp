@@ -1,17 +1,4 @@
 #include "game.hpp"
-/*
-float clamp(float min, float current, float max) {
-	if (current < min) {
-		return min;
-	}
-	if (current > max) {
-		return max;
-	}
-
-	return current;
-}
-*/
-
 Game::Game() {
 
 }
@@ -64,7 +51,6 @@ void Game::handleEvents() {
 
 void Game::addObj(CircOb::Obj ob){
 	objects.push_back(ob);
-	collisionstatus.push_back(false);
 }
 
 void Game::update(float frametime) {
@@ -75,16 +61,16 @@ void Game::update(float frametime) {
 	//maybe i could even maybe add tags for each node to say if i know that all the objects in one node are all circs, to exclusively do circ collisions, rather than check between types
 	//
 	//
-	//I also want to add sprites and  figure out how to add rotations as well as optimize for 2d collisions more, with that i need to figure out how to get the budge to set the circles to just above the point of 
-	//collision
+	//I also want to add sprites and  figure out how to add rotations
 	//I can abstract the code of the collisions and seperate the projection and altering part to be seperate so i can feed that same code into a circ and rect collision
 	//need to work out the math for a circ to rect collison as well
 
 	int max = objects.size();
+	//this loop just uniquely compares each element of the object list, its been fine up to 20 objects, haven't tested more than that.
 	for (int i = 0; i < max - 1; i++) {
 		for (int j = i + 1; j < max; j++) {
-			if (CircOb::checkforcollis(objects[i], objects[j], frametime)) {
-				CircOb::circCollision(objects[i], objects[j], frametime);
+			if (CircOb::checkforcollis(objects[i], objects[j])) {
+				CircOb::circCollision(objects[i], objects[j]);
 			}
 		}
 	}
