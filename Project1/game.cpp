@@ -53,20 +53,8 @@ void Game::addObj(CircOb::Obj ob){
 	objects.push_back(ob);
 }
 
-void Game::update(float frametime) {
-	//I want to impliment a location hashing algo, which basically take the inital list of objects, run a quick hashing on it to split the objects into n number of lists of potentially collided objects
-	//from this I want to be able to describe this as a graph which each node, has a connection to each other, basically a distance between clusters.
-	//operations i want on this is a merge nodes, a split nodes, and then collision detection within nodes.
-	//This has benefits based on the size of the scene and then also by the radius of each node, ie the distance all the other objects have from the center node
-	//maybe i could even maybe add tags for each node to say if i know that all the objects in one node are all circs, to exclusively do circ collisions, rather than check between types
-	//
-	//
-	//I also want to add sprites and  figure out how to add rotations
-	//I can abstract the code of the collisions and seperate the projection and altering part to be seperate so i can feed that same code into a circ and rect collision
-	//need to work out the math for a circ to rect collison as well
-
+void Game::simplecompare(){
 	int max = objects.size();
-	//this loop just uniquely compares each element of the object list, its been fine up to 20 objects, haven't tested more than that.
 	for (int i = 0; i < max - 1; i++) {
 		for (int j = i + 1; j < max; j++) {
 			if (CircOb::checkforcollis(objects[i], objects[j])) {
@@ -76,6 +64,58 @@ void Game::update(float frametime) {
 	}
 	for (int i = 0; i < max; i++) {
 		CircOb::borderCollision(objects[i], 0, max_y, 0, max_x);
+	}
+}
+
+void Game::advancedcompare()
+{
+	indexObjects();
+	for (int i = 0; i < objects.size(); i++) {
+		int x_index = objects[i].comparindex[x_comp];
+		int y_index = objects[i].comparindex[y_comp];
+		if (x_index + 1 < lookupmatrix.size()) {
+			std::cout << 'x' << x_index << "+1" << std::endl;
+			if (lookupmatrix[x_index + 1][y_index] != -1) {
+				int lookupindex = lookupmatrix[x_index + 1][y_index];
+				std::cout << i << "compared to " << lookupindex << std::endl;
+				CircOb::circCollision(objects[i], objects[lookupindex]);
+			}
+		}
+		if ((x_index - 1 >= 0)) {
+			std::cout << 'x' << x_index << "-1" << std::endl;
+			if (lookupmatrix[x_index - 1][y_index] != -1) {
+				int lookupindex = lookupmatrix[x_index + 1][y_index];
+				std::cout << i << "compared to " << lookupindex << std::endl;
+				CircOb::circCollision(objects[i], objects[lookupindex]);
+			}
+		}
+		if (y_index + 1 < lookupmatrix[x_index].size()) {
+			std::cout << 'y' << y_index << "+1" << std::endl;
+			if (lookupmatrix[x_index + 1][y_index] != -1) {
+				int lookupindex = lookupmatrix[x_index][y_index+1];
+				std::cout << i << "compared to " << lookupindex << std::endl;
+				CircOb::circCollision(objects[i], objects[lookupindex]);
+			}
+		}
+		if ((y_index - 1 > 0)) {
+			std::cout << 'y' << y_index << "-1" << std::endl;
+			if (lookupmatrix[x_index + 1][y_index] != -1) {
+				int lookupindex = lookupmatrix[x_index][y_index-1];
+				std::cout << i << "compared to " << lookupindex << std::endl;
+				CircOb::circCollision(objects[i], objects[lookupindex]);
+			}
+		}
+		CircOb::borderCollision(objects[i], 0, max_y, 0, max_x);
+		lookupmatrix[x_index][y_index] = -1;
+	}
+}
+
+void Game::update(float frametime) {
+	
+	//simplecompare();
+	advancedcompare();
+	int max = objects.size();
+	for (int i = 0; i < max; i++) {
 		CircOb::findpos(objects[i], frametime);
 	}
 }
@@ -121,3 +161,87 @@ void Game::clean() {
 	std::cout << "Game Cleaned" << std::endl;
 }
 
+void Game::initcomparemat()
+{
+	//currently we will be looking to make a square matrix
+	int elms = sqrt(objects.size())+1;
+	for (int i = 0; i < elms; i++) {
+		std::vector<int> temp;
+		for (int j = 0; j < elms; j++) {
+			temp.push_back(-1);
+		}
+		lookupmatrix.push_back(temp);
+	}
+	sidelength = elms;
+}
+
+int getdigatpos(float number, int pos) {
+	int temp = (int)number;
+	int mod = 10;
+	int divsor = pow(10, pos);
+	return (temp / divsor) % mod;
+}
+
+void Game::rangeassigment(std::vector<CircOb::Obj>& source, int maxdigit, int comp)
+{
+	std::vector<CircOb::Obj>temp;
+	for (int i = 0; i < source.size(); i++) {
+		temp.push_back(source[i]);
+	}
+	for (int i = 0; i < maxdigit; i++) {
+		std::vector<std::vector<CircOb::Obj>> buckets(10);
+		for (int j = 0; j < temp.size(); j++) {
+			int val = getdigatpos(temp[j].position[comp], i);
+			buckets[val].push_back(temp[j]);
+		}
+		int index = 0;
+		for (int k = 0; k < buckets.size(); k++) {
+			for (int l = 0; l < buckets[k].size(); l++) {
+				temp[index] = buckets[k][l];
+				index++;
+			}
+		}
+		buckets.clear();
+	}
+	int index = 0;
+	for (int i = 0; i < temp.size(); i++) {
+		std::cout << temp[i].position[y_comp] << std::endl;// change the default state on the objects check to false, and from there i can set it to true later on
+		source[i] = temp[i];
+		source[i].comparindex[comp] = index;
+		if (i % sidelength == sidelength - 1) {
+			index++;
+		}
+	}
+	temp.clear();
+
+}
+
+int countdigs(int number) {
+	int ndigs = 0;
+	while (number != 0) {
+		number = number / 10;
+		ndigs++;
+	}
+	return ndigs++;
+}
+
+void Game::indexObjects()
+{
+	rangeassigment(objects, countdigs(max_x), x_comp);
+	rangeassigment(objects, countdigs(max_y), y_comp);
+	for (int i = 0; i < objects.size(); i++) {
+		int index_x = objects[i].comparindex[x_comp];
+		int index_y = objects[i].comparindex[y_comp];
+		objects[i].quickindex = i;
+		lookupmatrix[index_x][index_y] = i;
+		std::cout << lookupmatrix[index_x][index_y] << ';';
+	}
+	//for (int i = 0; i < comparematrix.size(); i++) {
+		//for (int j = 0; j < comparematrix[i].size(); j++) {
+			//std::cout << comparematrix[i][j].position[x_comp] << ',';
+	//	}
+	//}
+	std::cout << std::endl;
+}
+
+//now I need to impliment the algo that goes through the objects list and does the comparison to the 4 objects touching it.

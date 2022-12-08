@@ -10,11 +10,14 @@ namespace CircOb {
 	struct Obj {
 		std::string name;
 		int color[4] = {0,0,0,2};
-		int radius = 25;
+		int radius = 7;
 		float position[2];
 		float velocity[2] = {0,0};
 		float acceleration[2] = {0,0};
 		float mass = 1;
+		int comparindex[2];
+		int quickindex;
+		bool check_able = true;
 		~Obj();
 	};
 
@@ -37,6 +40,7 @@ namespace CircOb {
 	float quickdet(float a[2], float b[2]);
 	void sub(float a[2], float b[2]);
 	bool checkforcollis(Obj ob_a, Obj ob_b);
+	bool checkforcollisadv(Obj ob_a, Obj ob_b);
 	void add(float a[2], float b[2]);
 
 

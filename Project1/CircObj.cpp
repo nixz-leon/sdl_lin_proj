@@ -124,8 +124,8 @@ void CircOb::proj(float a[2], float b[2], float destination[2])
 bool CircOb::checkforcollis(Obj ob_a, Obj ob_b)
 {
 	float deltapos[2] = { ob_b.position[x_comp] - ob_a.position[x_comp], ob_b.position[y_comp] - ob_a.position[y_comp] };
-	float dotedpos = mag(deltapos);
-	float radiuselm = (ob_a.radius + ob_b.radius);
+	float dotedpos = dot(deltapos, deltapos);
+	float radiuselm = (ob_a.radius + ob_b.radius)*(ob_a.radius + ob_b.radius);
 	return dotedpos <= radiuselm;
 }
 
@@ -148,8 +148,28 @@ void CircOb::circCollision(Obj& ob_a, Obj& ob_b) {
 	budge(ob_a, ob_b);
 }
 
-
+bool CircOb::checkforcollisadv(Obj ob_a, Obj ob_b) {
+	if (ob_a.check_able == false || ob_b.check_able == false) {
+		return false;
+	}
+	float acentered[2], bcentered[2], projecteda[2], projectedb[2];
+	acentered[0] = ob_b.position[0] - ob_a.position[0];
+	acentered[1] = ob_b.position[1] - ob_a.position[1];
+	bcentered[0] = ob_a.position[0] - ob_b.position[0];
+	bcentered[1] = ob_a.position[1] - ob_b.position[1];
+	proj(ob_a.velocity, acentered, projecteda);
+	proj(ob_b.velocity, bcentered, projectedb);
+	//We initially subtracted the projected component of a from a, for its force on the object, same goes for projb
+	sub(ob_a.velocity, projecteda);
+	sub(ob_b.velocity, projectedb);
+	//We then add the alteranative projection from the component to add its force on the respective object
+	add(ob_a.velocity, projectedb);
+	add(ob_b.velocity, projecteda);
+	//We then move the two circles that have collided out of the collision range, so that we don't get multiple collisions actions for the same collision event
+	budge(ob_a, ob_b);
+}
 
 CircOb::Obj::~Obj()
 {
 }
+

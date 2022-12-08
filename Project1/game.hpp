@@ -13,12 +13,18 @@ public:
 	void addObj(CircOb::Obj ob);
 	void handleEvents();
 	void update(float frametime);
+	void simplecompare();
+	void advancedcompare();
 	void DrawCircle(SDL_Renderer* renderer, CircOb::Obj circ);
 	void render();
 	void clean();
-
+	void initcomparemat();
+	void rangeassigment(std::vector<CircOb::Obj>& source, int maxdigit, int comp);
+	void indexObjects();
 	bool running() { return isrunning; };
 private:
+	std::vector<std::vector<int>> lookupmatrix; // this is simply needed for faster look up times
+	int sidelength;
 	int max_x;
 	int max_y;
 	std::vector<CircOb::Obj> objects;

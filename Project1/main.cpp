@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
 	Uint32 frameStart;
 	int frameTime;
 	std::vector<CircOb::Obj>;
-	int windowsize[2] = {800, 800};
+	int windowsize[2] = {2000, 1300};
 	int numberofobjects;
 	int initalv[2];
 	std::cout << "how many objects: ";
@@ -48,6 +48,8 @@ int main(int argc, char* argv[]) {
 		initalv[1] += rand() % 10;
 		numberofobjects--;
 	}
+
+	game->initcomparemat();
 	while (game->running()) {
 
 		frameStart = SDL_GetTicks();
