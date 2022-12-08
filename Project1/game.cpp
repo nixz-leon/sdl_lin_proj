@@ -70,7 +70,21 @@ void Game::simplecompare(){
 void Game::advancedcompare()
 {
 	indexObjects();
+	std::cout << "start" << std::endl;
+	std::cout << lookupmatrix[0][0] << std::endl;
+	for (int h = 0; h < lookupmatrix.size(); h++) {
+		for (int j = 0; j < lookupmatrix[h].size(); j++) {
+			std::cout << lookupmatrix[h][j] << ',';
+		}
+		std::cout << std::endl;
+	}
 	for (int i = 0; i < objects.size(); i++) {
+		for (int h = 0; h < lookupmatrix.size(); h++) {
+			for (int j = 0; j < lookupmatrix[h].size(); j++) {
+				std::cout << lookupmatrix[h][j] << ',';
+			}
+			std::cout << std::endl;
+		}
 		int x_index = objects[i].comparindex[x_comp];
 		int y_index = objects[i].comparindex[y_comp];
 		if (x_index + 1 < lookupmatrix.size()) {
@@ -84,14 +98,14 @@ void Game::advancedcompare()
 		if ((x_index - 1 >= 0)) {
 			std::cout << 'x' << x_index << "-1" << std::endl;
 			if (lookupmatrix[x_index - 1][y_index] != -1) {
-				int lookupindex = lookupmatrix[x_index + 1][y_index];
+				int lookupindex = lookupmatrix[x_index - 1][y_index];
 				std::cout << i << "compared to " << lookupindex << std::endl;
 				CircOb::circCollision(objects[i], objects[lookupindex]);
 			}
 		}
 		if (y_index + 1 < lookupmatrix[x_index].size()) {
 			std::cout << 'y' << y_index << "+1" << std::endl;
-			if (lookupmatrix[x_index + 1][y_index] != -1) {
+			if (lookupmatrix[x_index][y_index+1] != -1) {
 				int lookupindex = lookupmatrix[x_index][y_index+1];
 				std::cout << i << "compared to " << lookupindex << std::endl;
 				CircOb::circCollision(objects[i], objects[lookupindex]);
@@ -99,7 +113,7 @@ void Game::advancedcompare()
 		}
 		if ((y_index - 1 > 0)) {
 			std::cout << 'y' << y_index << "-1" << std::endl;
-			if (lookupmatrix[x_index + 1][y_index] != -1) {
+			if (lookupmatrix[x_index][y_index-1] != -1) {
 				int lookupindex = lookupmatrix[x_index][y_index-1];
 				std::cout << i << "compared to " << lookupindex << std::endl;
 				CircOb::circCollision(objects[i], objects[lookupindex]);
@@ -108,6 +122,7 @@ void Game::advancedcompare()
 		CircOb::borderCollision(objects[i], 0, max_y, 0, max_x);
 		lookupmatrix[x_index][y_index] = -1;
 	}
+	std::cout << "end" << std::endl;
 }
 
 void Game::update(float frametime) {
