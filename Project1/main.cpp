@@ -1,6 +1,13 @@
 #include "Game.hpp"
 #include <cstdlib>
 
+int getnextsquare(int number) {
+	int temp = sqrt(number);
+	if (temp * temp < number) {
+		temp++;
+	}
+	return temp;
+}
 Game* game = nullptr;
 //All the math is contained in CircObj.cpp, to find and adjust radius go to circObj.hpp
 int main(int argc, char* argv[]) {
@@ -10,7 +17,6 @@ int main(int argc, char* argv[]) {
 
 	Uint32 frameStart;
 	int frameTime;
-	std::vector<CircOb::Obj>;
 	int windowsize[2] = {2000, 1300};
 	int numberofobjects;
 	int initalv[2];
@@ -23,7 +29,7 @@ int main(int argc, char* argv[]) {
 	std::cout << "Y component of velocity: ";
 	std::cin >> initalv[1];
 
-	int iteamperrow = sqrt(numberofobjects) + 1;
+	int iteamperrow = getnextsquare(numberofobjects);
 	float spaceingx = windowsize[x_comp] / iteamperrow;
 	float spaceingy = windowsize[y_comp] / iteamperrow;
 	int positionx = spaceingx;

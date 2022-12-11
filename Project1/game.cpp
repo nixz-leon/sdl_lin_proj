@@ -179,7 +179,7 @@ void Game::clean() {
 void Game::initcomparemat()
 {
 	//currently we will be looking to make a square matrix
-	int elms = sqrt(objects.size())+1;
+	int elms = getnextsquare(objects.size());
 	for (int i = 0; i < elms; i++) {
 		std::vector<int> temp;
 		for (int j = 0; j < elms; j++) {
@@ -257,6 +257,14 @@ void Game::indexObjects()
 	//	}
 	//}
 	std::cout << std::endl;
+}
+
+int getnextsquare(int number) {
+	int temp = sqrt(number);
+	if (temp * temp < number) {
+		temp++;
+	}
+	return temp;
 }
 
 //now I need to impliment the algo that goes through the objects list and does the comparison to the 4 objects touching it.
