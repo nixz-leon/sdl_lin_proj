@@ -21,7 +21,7 @@ public:
 	void initcomparemat();
 	void rangeassigment(std::vector<CircOb::Obj>& source, int maxdigit, int comp);
 	void indexObjects();
-	int getnextsquare(int number);
+
 	bool running() { return isrunning; };
 private:
 	std::vector<std::vector<int>> lookupmatrix; // this is simply needed for faster look up times
@@ -37,5 +37,5 @@ private:
 
 
 };
-
+int getnextsquare(int number);
 #endif

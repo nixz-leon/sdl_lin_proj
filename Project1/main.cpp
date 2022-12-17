@@ -1,19 +1,12 @@
 #include "Game.hpp"
 #include <cstdlib>
 
-int getnextsquare(int number) {
-	int temp = sqrt(number);
-	if (temp * temp < number) {
-		temp++;
-	}
-	return temp;
-}
 Game* game = nullptr;
 //All the math is contained in CircObj.cpp, to find and adjust radius go to circObj.hpp
 int main(int argc, char* argv[]) {
-	const int FPS = 200;
+	const int FPS = 144;
 	const int frameDelay = 1000 / FPS;
-	const float SPF = 0.005f;
+	const float SPF = 0.00694444444f;
 
 	Uint32 frameStart;
 	int frameTime;
@@ -40,7 +33,6 @@ int main(int argc, char* argv[]) {
 	game->init("bloop", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowsize[0], windowsize[1], false);
 	while (numberofobjects > 0) {
 		CircOb::Obj temp;
-		std::cout << positionx << ',' << positiony << std::endl;
 		CircOb::setVals(temp, "ob", positionx, positiony, initalv[0], initalv[1], rand() % 255, rand() % 255, rand() % 255);
 		game->addObj(temp);
 		if ((positionx + spaceingx + 20) >= windowsize[x_comp]) {

@@ -10,7 +10,7 @@ namespace CircOb {
 	struct Obj {
 		std::string name;
 		int color[4] = {0,0,0,2};
-		int radius = 7;
+		int radius = 5;
 		float position[2];
 		float velocity[2] = {0,0};
 		float acceleration[2] = {0,0};
@@ -32,16 +32,14 @@ namespace CircOb {
 	void borderCollision(Obj& ob, int min_y, int max_y, int min_x, int max_x);
 	void circCollision(Obj& ob_a, Obj& ob_b);
 	void proj(float a[2], float b[2], float destination[2]);
+	void normproj(float a[2], float b[2], float destination[2]);
 	float dot(float a[2], float b[2]);
-	float mag(float a[2]);
-	void momentumstuff(Obj& ob_a, Obj& ob_b);
 	void scalarmult(float c, float v[2], float dest[2]);
 	void scalarmultimd(float c, float v[2]);
-	float quickdet(float a[2], float b[2]);
 	void sub(float a[2], float b[2]);
 	bool checkforcollis(Obj ob_a, Obj ob_b);
-	bool checkforcollisadv(Obj ob_a, Obj ob_b);
 	void add(float a[2], float b[2]);
+	void normalize(float vector[2]);
 
 
 

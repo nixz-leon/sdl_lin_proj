@@ -70,65 +70,65 @@ void Game::simplecompare(){
 void Game::advancedcompare()
 {
 	indexObjects();
-	std::cout << "start" << std::endl;
-	std::cout << lookupmatrix[0][0] << std::endl;
+	//std::cout << "start" << std::endl;
+	//std::cout << lookupmatrix[0][0] << std::endl;
 	for (int h = 0; h < lookupmatrix.size(); h++) {
 		for (int j = 0; j < lookupmatrix[h].size(); j++) {
-			std::cout << lookupmatrix[h][j] << ',';
+			//std::cout << lookupmatrix[h][j] << ',';
 		}
-		std::cout << std::endl;
+		//std::cout << std::endl;
 	}
 	for (int i = 0; i < objects.size(); i++) {
 		for (int h = 0; h < lookupmatrix.size(); h++) {
 			for (int j = 0; j < lookupmatrix[h].size(); j++) {
-				std::cout << lookupmatrix[h][j] << ',';
+				//std::cout << lookupmatrix[h][j] << ',';
 			}
-			std::cout << std::endl;
+			//std::cout << std::endl;
 		}
 		int x_index = objects[i].comparindex[x_comp];
 		int y_index = objects[i].comparindex[y_comp];
 		if (x_index + 1 < lookupmatrix.size()) {
-			std::cout << 'x' << x_index << "+1" << std::endl;
+			//std::cout << 'x' << x_index << "+1" << std::endl;
 			if (lookupmatrix[x_index + 1][y_index] != -1) {
 				int lookupindex = lookupmatrix[x_index + 1][y_index];
-				std::cout << i << "compared to " << lookupindex << std::endl;
+				//std::cout << i << "compared to " << lookupindex << std::endl;
 				CircOb::circCollision(objects[i], objects[lookupindex]);
 			}
 		}
 		if ((x_index - 1 >= 0)) {
-			std::cout << 'x' << x_index << "-1" << std::endl;
+			//std::cout << 'x' << x_index << "-1" << std::endl;
 			if (lookupmatrix[x_index - 1][y_index] != -1) {
 				int lookupindex = lookupmatrix[x_index - 1][y_index];
-				std::cout << i << "compared to " << lookupindex << std::endl;
+				//std::cout << i << "compared to " << lookupindex << std::endl;
 				CircOb::circCollision(objects[i], objects[lookupindex]);
 			}
 		}
 		if (y_index + 1 < lookupmatrix[x_index].size()) {
-			std::cout << 'y' << y_index << "+1" << std::endl;
+			//std::cout << 'y' << y_index << "+1" << std::endl;
 			if (lookupmatrix[x_index][y_index+1] != -1) {
 				int lookupindex = lookupmatrix[x_index][y_index+1];
-				std::cout << i << "compared to " << lookupindex << std::endl;
+				//std::cout << i << "compared to " << lookupindex << std::endl;
 				CircOb::circCollision(objects[i], objects[lookupindex]);
 			}
 		}
 		if ((y_index - 1 > 0)) {
-			std::cout << 'y' << y_index << "-1" << std::endl;
+			//std::cout << 'y' << y_index << "-1" << std::endl;
 			if (lookupmatrix[x_index][y_index-1] != -1) {
 				int lookupindex = lookupmatrix[x_index][y_index-1];
-				std::cout << i << "compared to " << lookupindex << std::endl;
+				//std::cout << i << "compared to " << lookupindex << std::endl;
 				CircOb::circCollision(objects[i], objects[lookupindex]);
 			}
 		}
 		CircOb::borderCollision(objects[i], 0, max_y, 0, max_x);
 		lookupmatrix[x_index][y_index] = -1;
 	}
-	std::cout << "end" << std::endl;
+	//std::cout << "end" << std::endl;
 }
 
 void Game::update(float frametime) {
 	
-	//simplecompare();
-	advancedcompare();
+	simplecompare();
+	//advancedcompare();
 	int max = objects.size();
 	for (int i = 0; i < max; i++) {
 		CircOb::findpos(objects[i], frametime);
@@ -249,14 +249,14 @@ void Game::indexObjects()
 		int index_y = objects[i].comparindex[y_comp];
 		objects[i].quickindex = i;
 		lookupmatrix[index_x][index_y] = i;
-		std::cout << lookupmatrix[index_x][index_y] << ';';
+		//std::cout << lookupmatrix[index_x][index_y] << ';';
 	}
 	//for (int i = 0; i < comparematrix.size(); i++) {
 		//for (int j = 0; j < comparematrix[i].size(); j++) {
 			//std::cout << comparematrix[i][j].position[x_comp] << ',';
 	//	}
 	//}
-	std::cout << std::endl;
+	//std::cout << std::endl;
 }
 
 int getnextsquare(int number) {
