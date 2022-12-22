@@ -10,9 +10,9 @@ int main(int argc, char* argv[]) {
 
 	Uint32 frameStart;
 	int frameTime;
-	int windowsize[2] = {2000, 1300};
+	int windowsize[2] = {2400, 1350};
 	int numberofobjects;
-	int initalv[2];
+	float initalv[2];
 	std::cout << "how many objects: ";
 	std::cin >> numberofobjects;
 	std::cout << std::endl;
@@ -21,30 +21,35 @@ int main(int argc, char* argv[]) {
 	std::cout << std::endl;
 	std::cout << "Y component of velocity: ";
 	std::cin >> initalv[1];
-
 	int iteamperrow = getnextsquare(numberofobjects);
 	float spaceingx = windowsize[x_comp] / iteamperrow;
 	float spaceingy = windowsize[y_comp] / iteamperrow;
-	int positionx = spaceingx;
-	int positiony = spaceingy;
+	int positionx = spaceingx/2;
+	int positiony = spaceingy/2;
+	int row_trakcer = 0;
+	float range = (initalv[0] + initalv[1]) / 2;
+	float minxv = initalv[0] - range;
+	float minyv = initalv[1] - range;
 
 
 	game = new Game();
 	game->init("bloop", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowsize[0], windowsize[1], false);
 	while (numberofobjects > 0) {
+		numberofobjects--;
 		CircOb::Obj temp;
 		CircOb::setVals(temp, "ob", positionx, positiony, initalv[0], initalv[1], rand() % 255, rand() % 255, rand() % 255);
 		game->addObj(temp);
-		if ((positionx + spaceingx + 20) >= windowsize[x_comp]) {
-			positionx = spaceingx;
+		if (row_trakcer == iteamperrow-1) {
+			positionx = spaceingx/2;
 			positiony += spaceingy;
+			row_trakcer = 0;
 		}
 		else {
 			positionx += spaceingx;
+			row_trakcer++;
 		}
-		initalv[0] += rand() % 10;
-		initalv[1] += rand() % 10;
-		numberofobjects--;
+		initalv[0] = minxv + (rand() % (int)range);
+		initalv[1] = minyv + (rand() % (int)range);
 	}
 
 	game->initcomparemat();

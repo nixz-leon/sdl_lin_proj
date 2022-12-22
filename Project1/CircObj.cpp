@@ -23,31 +23,32 @@ void CircOb::setPos(Obj& ob, float x, float y) {
 	ob.position[x_comp] = x;
 	ob.position[y_comp] = y;
 }
-void CircOb::budge(Obj& ob_a,Obj& ob_b)
+void CircOb::budge(Obj& ob_a,Obj& ob_b, float timestep)
 {
-	float error = 0.25f;
-	float midpoint[2];
-	midpoint[0] = (ob_a.position[x_comp] + ob_b.position[x_comp]) / 2;
-	midpoint[1] = (ob_a.position[y_comp] + ob_b.position[y_comp]) / 2;
-	float tempa[2];
-	float tempb[2];
-	tempa[0] = ob_a.position[0];
-	tempa[1] = ob_a.position[1];
-	tempb[0] = ob_b.position[0];
-	tempb[1] = ob_b.position[1];
-	sub(tempa, midpoint);
-	sub(tempb, midpoint);
-	normalize(tempa);
-	normalize(tempb);
-	float scalara = (ob_a.radius+error);
-	float scalarb = (ob_b.radius+error);
-	scalarmultimd(scalara, tempa);
-	scalarmultimd(scalarb, tempb);
-	add(tempa, midpoint);
-	add(tempb, midpoint);
-	setPos(ob_a, tempa[0], tempa[1]);
-	setPos(ob_b, tempb[0], tempb[1]);
-
+	if (checkforcollis(ob_a, ob_b, timestep)) {
+		float error = 0.25f;
+		float midpoint[2];
+		midpoint[0] = (ob_a.position[x_comp] + ob_b.position[x_comp]) / 2;
+		midpoint[1] = (ob_a.position[y_comp] + ob_b.position[y_comp]) / 2;
+		float tempa[2];
+		float tempb[2];
+		tempa[0] = ob_a.position[0];
+		tempa[1] = ob_a.position[1];
+		tempb[0] = ob_b.position[0];
+		tempb[1] = ob_b.position[1];
+		sub(tempa, midpoint);
+		sub(tempb, midpoint);
+		normalize(tempa);
+		normalize(tempb);
+		float scalara = (ob_a.radius + error);
+		float scalarb = (ob_b.radius + error);
+		scalarmultimd(scalara, tempa);
+		scalarmultimd(scalarb, tempb);
+		add(tempa, midpoint);
+		add(tempb, midpoint);
+		setPos(ob_a, tempa[0], tempa[1]);
+		setPos(ob_b, tempb[0], tempb[1]);
+	}
 }
 void CircOb::setVel(Obj& ob, float xv, float yv) {
 	ob.velocity[x_comp] = xv;
@@ -118,8 +119,10 @@ void CircOb::normproj(float a[2], float b[2], float destination[2]) {
 	scalarmult(scalar, b, destination);
 }
 //checkforcollis finds the distance between the two circles and then compares it to the combined radius of the two circles and returns true if the circles overlap
-bool CircOb::checkforcollis(Obj ob_a, Obj ob_b)
+bool CircOb::checkforcollis(Obj ob_a, Obj ob_b, float timestep)
 {
+	CircOb::findpos(ob_a, timestep);
+	CircOb::findpos(ob_b, timestep);
 	float deltapos[2] = { ob_b.position[x_comp] - ob_a.position[x_comp], ob_b.position[y_comp] - ob_a.position[y_comp] };
 	float dotedpos = dot(deltapos, deltapos);
 	float radiuselm = (ob_a.radius + ob_b.radius)*(ob_a.radius + ob_b.radius);
@@ -146,7 +149,7 @@ void CircOb::normalize(float vector[2]) {
 	scalarmultimd(scalar, vector);
 }
 
-void CircOb::circCollision(Obj& ob_a, Obj& ob_b) {
+void CircOb::circCollision(Obj& ob_a, Obj& ob_b, float timestep) {
 	// A centered is the delta of b from a, B centered is the delta of a from b.
 	float centered[2], bcentered[2], projecteda[2], projectedb[2];
 	centered[0] = ob_b.position[x_comp] - ob_a.position[x_comp];
@@ -161,7 +164,7 @@ void CircOb::circCollision(Obj& ob_a, Obj& ob_b) {
 	sub(ob_b.velocity, projectedb);
 	add(ob_a.velocity, projectedb);
 	add(ob_b.velocity, projecteda);
-	budge(ob_a, ob_b);
+	budge(ob_a, ob_b, timestep);
 }
 
 

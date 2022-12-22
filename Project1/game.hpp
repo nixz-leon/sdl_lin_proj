@@ -13,7 +13,7 @@ public:
 	void addObj(CircOb::Obj ob);
 	void handleEvents();
 	void update(float frametime);
-	void simplecompare();
+	void simplecompare(float timestep);
 	void advancedcompare();
 	void DrawCircle(SDL_Renderer* renderer, CircOb::Obj circ);
 	void render();

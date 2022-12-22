@@ -53,12 +53,12 @@ void Game::addObj(CircOb::Obj ob){
 	objects.push_back(ob);
 }
 
-void Game::simplecompare(){
+void Game::simplecompare(float timestep){
 	int max = objects.size();
 	for (int i = 0; i < max - 1; i++) {
 		for (int j = i + 1; j < max; j++) {
-			if (CircOb::checkforcollis(objects[i], objects[j])) {
-				CircOb::circCollision(objects[i], objects[j]);
+			if (CircOb::checkforcollis(objects[i], objects[j], timestep)) {
+				CircOb::circCollision(objects[i], objects[j], timestep);
 			}
 		}
 	}
@@ -67,6 +67,7 @@ void Game::simplecompare(){
 	}
 }
 
+/*
 void Game::advancedcompare()
 {
 	indexObjects();
@@ -124,10 +125,10 @@ void Game::advancedcompare()
 	}
 	//std::cout << "end" << std::endl;
 }
-
+*/
 void Game::update(float frametime) {
 	
-	simplecompare();
+	simplecompare(frametime/2);
 	//advancedcompare();
 	int max = objects.size();
 	for (int i = 0; i < max; i++) {
@@ -137,6 +138,8 @@ void Game::update(float frametime) {
 
 void Game::DrawCircle(SDL_Renderer* renderer, CircOb::Obj circ){
 	SDL_SetRenderDrawColor(renderer, circ.color[0], circ.color[1], circ.color[2], circ.color[3]);
+	SDL_Point points[1255];
+	int number = 0;
 	for (int w = 0; w < circ.radius * 2; w++)
 	{
 		for (int h = 0; h < circ.radius * 2; h++)
@@ -145,12 +148,17 @@ void Game::DrawCircle(SDL_Renderer* renderer, CircOb::Obj circ){
 			int dy = (int)circ.radius - h; // vertical offset
 			if ((dx * dx + dy * dy) <= (circ.radius * circ.radius))
 			{
-				SDL_RenderDrawPoint(renderer, circ.position[x_comp] + dx, circ.position[y_comp] + dy);
+				points[number].x = circ.position[x_comp] + dx;
+				points[number].y = circ.position[y_comp] + dy;
+				//SDL_RenderDrawPoint(renderer, circ.position[x_comp] + dx, circ.position[y_comp] + dy);
+				number++;
 			}
 		}
 	}
-
+	SDL_RenderDrawPoints(renderer, points, number - 1);
 }
+
+
 
 
 void Game::render() {
