@@ -10,18 +10,20 @@ public:
 	~Game();
 	
 	void init(const char* title, int x, int y, int width, int height, bool fullscreen);
-	void addObj(CircOb::Obj ob);
+	void addObj(Circ ob);
 	void handleEvents();
 	void update(float frametime);
-	void DrawCircle(SDL_Renderer* renderer, CircOb::Obj circ);
+	void simplecompare(float timestep);
+	void DrawCircle(SDL_Renderer* renderer, Circ circ);
 	void render();
 	void clean();
-
 	bool running() { return isrunning; };
 private:
+	std::vector<std::vector<int>> lookupmatrix; // this is simply needed for faster look up times
+	int sidelength;
 	int max_x;
 	int max_y;
-	std::vector<CircOb::Obj> objects;
+	std::vector<Circ> objects;
 	int count = 0;
 	bool isrunning;
 	SDL_Window* window;
@@ -30,5 +32,5 @@ private:
 
 
 };
-
+int getnextsquare(int number);
 #endif
