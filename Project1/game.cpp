@@ -37,6 +37,11 @@ void Game::addObj(Circ ob) {
 	objects.push_back(ob);
 }
 
+void Game::addObjs(std::vector<Circ> list)
+{
+	objects = list;
+}
+
 void Game::handleEvents() {
 	SDL_Event event;
 	SDL_PollEvent(&event);
