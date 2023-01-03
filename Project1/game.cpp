@@ -1,4 +1,5 @@
 #include "game.hpp"
+
 Game::Game() {
 
 }
@@ -44,13 +45,18 @@ void Game::addObjs(std::vector<Circ> list)
 
 void Game::handleEvents() {
 	SDL_Event event;
-	SDL_PollEvent(&event);
-	switch (event.type) {
-	case SDL_QUIT:
-		isrunning = false;
-		break;
-	default:
-		break;
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+		case SDL_QUIT:
+			isrunning = false;
+			break;
+		case SDL_MOUSEBUTTONDOWN:
+			if (objects[0].buttoncheck(mousex, mousey)) {
+				objects[0].setpos(mousex, mousey);
+			}
+		default:
+				break;
+		}
 	}
 	
 
@@ -60,6 +66,7 @@ void Game::update(float frametime) {
 
 	simplecompare(frametime / 2);
 	//advancedcompare();
+	SDL_GetMouseState(&mousex, &mousey);
 	int max = objects.size();
 	for (int i = 0; i < max; i++) {
 		objects[i].updatepos(frametime);

@@ -74,6 +74,19 @@ void Circ::edgecollision(int min_x, int max_x, int min_y, int max_y)
 
 
 
+bool Circ::buttoncheck(int x, int y)
+{
+	float distancevec[2];
+	distancevec[0] = x - position[0];
+	distancevec[1] = y - position[1];
+	float temp = dot(distancevec, distancevec);
+	float max = rad * rad;
+	if (temp < max) {
+		return true;
+	}
+	return false;
+}
+
 Circ::~Circ()
 {
 }

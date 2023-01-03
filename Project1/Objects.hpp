@@ -19,6 +19,7 @@ public:
 	};
 	inline void setpos(float x, float y) { position[x_comp] = x; position[y_comp] = y; };
 	inline bool isdynamic() { return dynamic_physics; };
+	bool buttoncheck(int x, int y);
 	~Circ();
 	std::string name;
 	int color[4] = { 0,0,0,0 };
@@ -48,6 +49,7 @@ void collisionevent(Circ& a, Circ& b, float timestep);
 //{c,-s}
 //{s,c}
 
+
 class rect {
 public:
 	int center[2];
@@ -57,8 +59,11 @@ public:
 	float thirdcorn[2];
 	float fourthcorn[2];
 	bool dynamic_physics = false;
-
-
+	rect();
+	rect(std::string name, int color[3], int width, int height, int rotation);
+	rect(std::string name, int color[3], int firstcorner[2], int secondcorner[2], int thirdcorner[2], int fourthcorner[2]);
+	inline void rotateobject(float angle);
+	inline bool checkforpointoverlap(int x, int y);
 
 };
 

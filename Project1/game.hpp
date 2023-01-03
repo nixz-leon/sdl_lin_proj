@@ -4,6 +4,7 @@
 #include "SDL.h"
 #include "Objects.hpp"
 #include <thread>
+#include "Filesystem.hpp"
 
 struct index_con {
 	int first;
@@ -28,18 +29,17 @@ public:
 	bool running() { return isrunning; };
 	inline std::vector<Circ>  returnobs() { return objects; };
 private:
-	std::vector<std::vector<int>> lookupmatrix; // this is simply needed for faster look up times
 	int sidelength;
 	int max_x;
 	int max_y;
+	int mousex;
+	int mousey;
 	std::vector<Circ> objects;
+	std::vector<Circ> buttons;
 	int count = 0;
 	bool isrunning;
 	SDL_Window* window;
 	SDL_Renderer* renderer;
-
-
-
 };
 int getnextsquare(int number);
 #endif

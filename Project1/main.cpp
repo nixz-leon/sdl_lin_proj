@@ -1,6 +1,6 @@
 #include "Game.hpp"
 #include <cstdlib>
-#include "Filesystem.hpp"
+
 Game* game = nullptr;
 //All the math is contained in CircObj.cpp, to find and adjust radius go to circObj.hpp
 int main(int argc, char* argv[]) {
@@ -61,7 +61,7 @@ int main(int argc, char* argv[]) {
 	}
 	*/
 	std::vector<Circ> circlist;
-	readinCircs("Circ.txt", circlist);
+	readinCircs("single.txt", circlist);
 	game->addObjs(circlist);
 	std::vector<Circ> bloop = game->returnobs();
 	for (int i = 0; i < bloop.size(); i++) {
@@ -70,7 +70,7 @@ int main(int argc, char* argv[]) {
 	int counter = 0;
 	while (game->running()) {
 		frameStart = SDL_GetTicks();
-
+		/*
 		if (counter == 1000) {
 			std::vector<Circ> temp;
 			readinCircs("Circ.txt", temp);
@@ -78,6 +78,7 @@ int main(int argc, char* argv[]) {
 			temp.clear();
 			counter = 0;
 		}
+		*/
 
 		game->handleEvents();
 		game->update(SPF);
