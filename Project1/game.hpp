@@ -23,6 +23,7 @@ public:
 	void update(float frametime);
 	bool excute_eventlist(std::vector<index_con> vec, float timestep);
 	void simplecompare(float timestep);
+	void advancecompare(float timestep);
 	void DrawCircle(SDL_Renderer* renderer, Circ circ);
 	void render();
 	void clean();
@@ -36,6 +37,9 @@ private:
 	int mousey;
 	std::vector<Circ> objects;
 	std::vector<Circ> buttons;
+	std::vector<int> spacialpartitions;
+	std::vector<int> range_x;
+	std::vector<int>  range_y;
 	int count = 0;
 	bool isrunning;
 	SDL_Window* window;

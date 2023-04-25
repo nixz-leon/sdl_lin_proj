@@ -34,7 +34,7 @@ Circ::Circ(std::string new_name, int new_color[3], int new_r, float new_p[2], fl
 	color[0] = new_color[0];
 	color[1] = new_color[1];
 	color[2] = new_color[2];
-	rad = new_r;
+	//rad = new_r;
 	position[0] = new_p[0];
 	position[1] = new_p[1];
 	if (physics_type) {

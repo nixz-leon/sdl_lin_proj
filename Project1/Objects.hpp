@@ -23,7 +23,7 @@ public:
 	~Circ();
 	std::string name;
 	int color[4] = { 0,0,0,0 };
-	int rad;
+	float rad = 20;
 	float position[2];
 	float velocity[2];
 	float acceleration[2];
@@ -45,11 +45,14 @@ inline void proj(float a[2], float b[2], float dest[2]);
 inline void normalize(float a[2]);
 void collisionevent(Circ& a, Circ& b, float timestep);
 
+
+
+
 //rotation matrix for the purposes of 
 //{c,-s}
 //{s,c}
 
-
+/*
 class rect {
 public:
 	int center[2];
@@ -66,6 +69,7 @@ public:
 	inline bool checkforpointoverlap(int x, int y);
 
 };
+*/
 
 
 #endif
